@@ -1,3 +1,3 @@
 # editorconfigs
 
-Editor configs
+ CLI for adding .editorconfig preset files to projects 
