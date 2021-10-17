@@ -20,4 +20,4 @@ You may need to make the program executable. You can do this using the following
 
 ```bash
 chmod +x editorconfigs
-``
+```
