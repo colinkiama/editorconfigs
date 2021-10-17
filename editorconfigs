@@ -55,34 +55,39 @@ rreadlink()
 
 show_presets()
 {
-	CONIFGS_DIR="${SCRIPT_DIR}/${CONFIGS_FOLDER_NAME}"
+	
+  echo "Available presets (To use them write: \`editorconfigs [PRESET_NAME]\`):"
+
 	for config_file in $CONIFGS_DIR/*
 	do
-		echo "$(basename "$config_file")"
+    file_name=$(basename "$config_file")
+		echo "${file_name%$PRESET_FILE_EXTENSION}"
 	done
 }
 
 copy_preset_to_current_directory()
 {
 	requested_preset=$1
-	preset_path=${SCRIPT_DIR}/${CONIFGS_DIR}${PRESET_FILE_EXTENSION}
+	preset_path=$CONIFGS_DIR/$requested_preset$PRESET_FILE_EXTENSION
+
 	if [ -e "${preset_path}" ]
 	then
 		cp $preset_path "${PWD}/.editorconfig"
   else
-    echo ""
+    echo "Error: There's no preset named \"$1\" available.\n"
+    show_presets
 	fi
 }
 
 SCRIPT_DIR=$(dirname -- "$(rreadlink "$0")")
-echo "SCRIPT_DIR: ${SCRIPT_DIR}";
+CONIFGS_DIR="${SCRIPT_DIR}/${CONFIGS_FOLDER_NAME}"
 
 case $# in
 	0)
     show_presets
     ;;
   1)
-    copy_preset_to_current_directory
+    copy_preset_to_current_directory $1
     ;;
   *)
     echo "Too many parameters.\nOnly one is required"
